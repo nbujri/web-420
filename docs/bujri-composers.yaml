@@ -1,0 +1,64 @@
+# description of composers API
+openapi: "3.0.0"
+info:
+  title: Composer API
+  version: "1.0.0"
+paths:
+  /composers:
+    description: List of all composers
+    get:
+      tags:
+        - Composers
+      summary: Get all of composers
+      description: Queries all existing composers in database
+      responses:
+        "200":
+          description: List of all composers
+        "500":
+          description: Server Exceptions
+        "501":
+          description: MongoDB Exceptions
+    post:
+      tags:
+        - Composers
+      summary: Add composer
+      description: Add new composer to list
+      requestBody:
+        description: Composer information
+        content:
+          application/json:
+            schema:
+              required:
+                - firstName
+                - lastName
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+      responses:
+        "200":
+          description: Composer added
+        "500":
+          description: Server Exceptions
+        "501":
+          description: MongoDB Exceptions
+  /composers/{id}:
+    get:
+      tags:
+        - Composers
+      summary: Search for composer
+      description: Search for a composer by querying a matching id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Composer with matching id
+        "500":
+          description: Server Exceptions
+        "501":
+          description: MongoDB Exceptions
