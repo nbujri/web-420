@@ -28,6 +28,8 @@ const Person = require("../models/bujri-person");
  */
 router.get("/persons", async (req, res) => {
   try {
+    // return all people
+    // or return appropriate error message
     Person.find({}, function (err, people) {
       if (err) {
         res.status(501).send({ message: `MongoDB Exception: ${err}` });
@@ -92,6 +94,7 @@ router.get("/persons", async (req, res) => {
  */
 router.post("/persons", async (req, res) => {
   try {
+    // get person info
     const newPerson = {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
@@ -100,6 +103,8 @@ router.post("/persons", async (req, res) => {
       birthDate: req.body.birthDate,
     };
 
+    // create new person document
+    // or send appropriate error message
     await Person.create(newPerson, function (err, person) {
       if (err) {
         res.status(501).send({ message: `MongoDB Exception: ${err}` });
