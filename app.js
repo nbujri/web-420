@@ -10,6 +10,7 @@ const swaggerDoc = require("swagger-jsdoc");
 const mongoose = require("mongoose");
 const composerRouter = require("./routes/bujri-composer-routes");
 const personRouter = require("./routes/bujri-person-routes");
+const userRouter = require("./routes/bujri-session-routes");
 
 const app = express();
 
@@ -53,6 +54,7 @@ const openapiSpecification = swaggerDoc(options);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(openapiSpecification));
 app.use("/api", composerRouter);
 app.use("/api", personRouter);
+app.use("/api", userRouter);
 
 // create http server
 http.createServer(app).listen(app.get("port"), function () {
