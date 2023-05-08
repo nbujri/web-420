@@ -120,4 +120,98 @@ router.post("/composers", async (req, res) => {
   }
 });
 
+/**
+ * updateComposerById
+ * @openapi
+ * /api/composers/{id}:
+ *  put:
+ *    tags:
+ *      - Composers
+ *    description: Update composer info with specified id
+ *    summary: Update composer info
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        required: true
+ *        schema:
+ *          type: string
+ *    requestBody:
+ *      description: Updated composer info
+ *      content:
+ *        application/json:
+ *          schema:
+ *            properties:
+ *              firstName:
+ *                type: string
+ *              lastName:
+ *                type: string
+ *    responses:
+ *      "200":
+ *        description: Array of composer documents
+ *      "401":
+ *        description: Invalid composer id
+ *      "500":
+ *        description: Server Exception
+ *      "501":
+ *        description: MongoDB Exception
+ */
+router.put("/composers/:id", async (req, res) => {
+  try {
+    // find matching composer
+    const composer = await Composer.findOne({ _id: req.params.id });
+
+    if (composer) {
+      composer.set({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+      });
+      await composer.save();
+    } else {
+      res.status(401).send({ message: "Invalid composer id" });
+    }
+  } catch (e) {
+    res.status(500).send({ message: `Server Exception: ${e.message}` });
+  }
+});
+
+/**
+ * deleteComposerById
+ * @openapi
+ * /api/composers/{id}:
+ *  delete:
+ *    tags:
+ *      - Composers
+ *    description: Delete composer with specified id
+ *    summary: Delete composer
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *      "200":
+ *        description: Composer document
+ *      "500":
+ *        description: Server Exception
+ *      "501":
+ *        description: MongoDB Exception
+ */
+router.delete("/composers/:id", async (req, res) => {
+  try {
+    await Composer.findByIdAndDelete(
+      { _id: req.params.id },
+      function (err, composer) {
+        if (err) {
+          res.status(501).send({ message: "MongoDB Exception" });
+        } else {
+          res.status(200).json(composer);
+        }
+      }
+    );
+  } catch (e) {
+    res.status(500).send({ message: `Server Exception: ${e.message}` });
+  }
+});
+
 module.exports = router;
