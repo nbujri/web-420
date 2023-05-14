@@ -12,6 +12,7 @@ const composerRouter = require("./routes/bujri-composer-routes");
 const personRouter = require("./routes/bujri-person-routes");
 const userRouter = require("./routes/bujri-session-routes");
 const nodeShopperRouter = require("./routes/bujri-node-shopper-routes");
+const teamRouter = require("./routes/bujri-team-routes");
 
 const app = express();
 
@@ -57,6 +58,7 @@ app.use("/api", composerRouter);
 app.use("/api", personRouter);
 app.use("/api", userRouter);
 app.use("/api", nodeShopperRouter);
+app.use("/api", teamRouter);
 
 // create http server
 http.createServer(app).listen(app.get("port"), function () {
