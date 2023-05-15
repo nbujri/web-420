@@ -60,6 +60,11 @@ app.use("/api", userRouter);
 app.use("/api", nodeShopperRouter);
 app.use("/api", teamRouter);
 
+// redirect to api-docs
+app.get("/", (req, res) => {
+  res.redirect("/api-docs");
+});
+
 // create http server
 http.createServer(app).listen(app.get("port"), function () {
   console.log(`Application started and listening on port ${app.get("port")}`);
